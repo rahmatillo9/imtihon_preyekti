@@ -1,6 +1,5 @@
-import { Column, DataType, Model, Table, HasMany } from "sequelize-typescript";
-import { Course } from "src/courses/courses.entity";
-import { Enrollment } from "src/enrollments/entrollmen.entity";
+import { Column, DataType, Model, Table} from "sequelize-typescript";
+
 
 @Table({
   tableName: 'users4',
@@ -33,10 +32,5 @@ export class User extends Model<User> {
   password!: string;
 
 
-  @HasMany(() => Course)
-  courses: Course[];
 
-
-  @HasMany(() => Enrollment)
-  enrollments: Enrollment[];
 }

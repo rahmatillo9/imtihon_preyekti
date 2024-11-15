@@ -1,6 +1,6 @@
 import { Table, Column, Model, ForeignKey, BelongsTo, DataType } from 'sequelize-typescript';
 import { User } from 'src/users/users.entity';
-import { Course } from 'src/courses/courses.entity';
+import { Course } from 'src/courses/courses.model';
 
 @Table({
   tableName: 'enrollments',

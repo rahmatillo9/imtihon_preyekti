@@ -5,6 +5,8 @@ import { AuthModule } from './authguard/JwtModule ';
 import { CoursesModule } from './courses/courses.module';
 import { EnrollmentsModule } from './enrollments/enrollments.module';
 import { AssignmentsModule } from './assignments/assignments.module';
+
+
 import * as dotenv from "dotenv";
 dotenv.config();
 @Module({
@@ -24,6 +26,8 @@ dotenv.config();
    CoursesModule,
    EnrollmentsModule,
    AssignmentsModule,
+
+
 
   ],
 })

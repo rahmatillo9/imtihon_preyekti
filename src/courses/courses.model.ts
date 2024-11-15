@@ -1,12 +1,12 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo, HasMany } from 'sequelize-typescript';
 import { User } from 'src/users/users.entity';
-import { Course } from 'src/courses/courses.entity';
+import { Enrollment } from 'src/enrollments/entrollment.model';
 
 @Table({
-  tableName: 'assignments',
+  tableName: 'courses',
   timestamps: true,
 })
-export class Assignment extends Model<Assignment> {
+export class Course extends Model<Course> {
   @Column({
     type: DataType.INTEGER,
     autoIncrement: true,
@@ -27,23 +27,17 @@ export class Assignment extends Model<Assignment> {
   description: string;
 
   @Column({
-    type: DataType.DATE,
-    allowNull: true,
-  })
-  dueDate: Date;
-
-  // Kurs bilan bog'lanish
-  @ForeignKey(() => Course)
-  @Column({
-    type: DataType.INTEGER,
+    type: DataType.DECIMAL(10, 2),
     allowNull: false,
   })
-  courseId: number;
+  price: number;
 
-  @BelongsTo(() => Course)
-  course: Course;
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  category: string;
 
-  // O‘qituvchi bilan bog'lanish
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
@@ -53,4 +47,8 @@ export class Assignment extends Model<Assignment> {
 
   @BelongsTo(() => User)
   teacher: User;
+
+
+  @HasMany(() => Enrollment)
+  enrollments: Enrollment[];
 }
