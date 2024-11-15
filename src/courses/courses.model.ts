@@ -1,6 +1,7 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo, HasMany } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo, HasMany, BelongsToMany } from 'sequelize-typescript';
 import { User } from 'src/users/users.entity';
 import { Enrollment } from 'src/enrollments/entrollment.model';
+import { Lesson } from 'src/lessons/lessons.model';
 
 @Table({
   tableName: 'courses',
@@ -48,6 +49,8 @@ export class Course extends Model<Course> {
   @BelongsTo(() => User)
   teacher: User;
 
+  @BelongsToMany(() => Lesson, lesson => lesson.courseId)
+  lessons: Lesson[];
 
   @HasMany(() => Enrollment)
   enrollments: Enrollment[];

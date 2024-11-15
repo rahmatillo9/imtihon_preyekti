@@ -5,6 +5,9 @@ import { AuthModule } from './authguard/JwtModule ';
 import { CoursesModule } from './courses/courses.module';
 import { EnrollmentsModule } from './enrollments/enrollments.module';
 import { AssignmentsModule } from './assignments/assignments.module';
+import { LessonsModule } from './lessons/lessons.module';
+import { SubmissionsModule } from './submissions/submissions.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 
 import * as dotenv from "dotenv";
@@ -26,6 +29,9 @@ dotenv.config();
    CoursesModule,
    EnrollmentsModule,
    AssignmentsModule,
+   LessonsModule,
+   SubmissionsModule,
+   ReviewsModule,
 
 
 
