@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Course } from './courses.model';
 import { CreatecourseDto, UpdateCourseDto } from 'src/validators/courses.validator';
+import { User } from 'src/users/users.entity';
+import { Lesson } from 'src/lessons/lessons.model';
+
 
 @Injectable()
 export class CoursesService {
@@ -10,27 +13,49 @@ export class CoursesService {
     private readonly courseModel: typeof Course,
   ) {}
 
-  // Create a course
+
   async createCourse(createCourseDto: CreatecourseDto): Promise<Course> {
     return this.courseModel.create(createCourseDto);
   }
 
-  // Get all courses
+
   async findAll(): Promise<Course[]> {
     return this.courseModel.findAll({
-      include: ['teacher', 'lessons', 'enrollments'],
+      include: [
+        {
+          model: User,
+          as: 'teacher', 
+          attributes: ['FirstName', 'Lastname'], 
+        },
+        {
+          model: Lesson,
+          as: 'lessons', 
+          attributes: ['description', 'startTime', 'endTime'], 
+        },
+      ],
     });
   }
 
-  // Get a course by ID
+
   async findOne(id: number): Promise<Course> {
     return this.courseModel.findOne({
       where: { id },
-      include: ['teacher', 'lessons', 'enrollments'],
+      include: [
+        {
+          model: User,
+          as: 'teacher', 
+          attributes: ['FirstName', 'Lastname'], 
+        },
+        {
+          model: Lesson,
+          as: 'lessons', 
+          attributes: ['description', 'startTime', 'endTime'], 
+        },
+      ],
     });
   }
 
-  // Update a course
+
   async update(
     id: number,
     updateCourseDto: UpdateCourseDto,
@@ -41,7 +66,39 @@ export class CoursesService {
     });
   }
 
-  // Delete a course
+  async findByCategory(category: string): Promise<Course[]> {
+    try {
+      const courses = await this.courseModel.findAll({
+        where: { category },
+        include: [
+          {
+            model: User,
+            as: 'teacher', 
+            attributes: ['FirstName', 'Lastname'], 
+          },
+          {
+            model: Lesson,
+            as: 'lessons', 
+            attributes: ['description', 'startTime', 'endTime'], 
+          },
+        ],
+      });
+  
+
+      if (!courses.length) {
+        console.log(`No courses found in category: ${category}`);
+        return [];
+      }
+  
+      return courses;
+    } catch (error) {
+      console.error('Error fetching courses by category:', error.message);
+      throw new Error('Could not fetch courses. Please try again later.');
+    }
+  }
+  
+
+
   async delete(id: number): Promise<void> {
     const course = await this.courseModel.findOne({
       where: { id },

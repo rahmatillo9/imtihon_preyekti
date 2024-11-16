@@ -17,26 +17,32 @@ import { Course } from './courses.model';
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
-  // Create a course
+
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async createCourse(@Body() createCourseDto: CreatecourseDto): Promise<Course> {
     return this.coursesService.createCourse(createCourseDto);
   }
 
-  // Get all courses
+
+
+
   @Get()
   async findAll(): Promise<Course[]> {
     return this.coursesService.findAll();
   }
+  
+  @Get('/category/:category')
+  async getBycategory(@Param('category') category: string):Promise<Course[]>{
+    return this.coursesService.findByCategory(category);
+  }
 
-  // Get a course by ID
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<Course> {
     return this.coursesService.findOne(id);
   }
 
-  // Update a course by ID
+
   @Patch(':id')
   async update(
     @Param('id') id: number,
@@ -46,7 +52,7 @@ export class CoursesController {
     return updatedCourse;
   }
 
-  // Delete a course by ID
+
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id') id: number): Promise<void> {

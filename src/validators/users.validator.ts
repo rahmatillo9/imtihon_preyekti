@@ -8,6 +8,11 @@ export enum Role{
 }
 
 export class CreateUsersDto{
+    
+    @IsString()
+    @IsNotEmpty()
+    FirstName: string;
+
     @IsString()
     @IsNotEmpty()
     Lastname: string;
@@ -27,6 +32,13 @@ export class CreateUsersDto{
 
 
 export class UpdateUserDto {
+
+    @IsOptional()
+    @IsString()
+    @IsNotEmpty()
+    FirstName?: string;
+  
+
     @IsOptional()
     @IsString()
     @IsNotEmpty()

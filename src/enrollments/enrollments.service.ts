@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Enrollment } from './entrollment.model';
 import { CreateEnrollmentDto, UpdateEnrollmentDto } from 'src/validators/entrollment.entity';
+import { User } from 'src/users/users.entity';
+import { Course } from 'src/courses/courses.model';
 
 @Injectable()
 export class EnrollmentsService {
@@ -10,27 +12,76 @@ export class EnrollmentsService {
     private readonly enrollmentModel: typeof Enrollment,
   ) {}
 
-  // Create an enrollment
+
   async createEnrollment(createEnrollmentDto: CreateEnrollmentDto): Promise<Enrollment> {
     return this.enrollmentModel.create(createEnrollmentDto);
   }
 
-  // Get all enrollments
+
   async findAll(): Promise<Enrollment[]> {
     return this.enrollmentModel.findAll({
-      include: ['user', 'course'],
+      include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: ['FirstName', 'LastName'],
+      },
+
+      {
+        model: Course,
+        as: 'course',
+        attributes: ['title', 'description', 'price', 'category']
+      }
+
+
+      ],
     });
   }
 
-  // Get an enrollment by ID
+  
   async findOne(id: number): Promise<Enrollment> {
     return this.enrollmentModel.findOne({
       where: { id },
-      include: ['user', 'course'],
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['FirstName', 'LastName'],
+        },
+  
+        {
+          model: Course,
+          as: 'course',
+          attributes: ['title', 'description', 'price', 'category']
+        }
+  
+  
+        ],
     });
   }
 
-  // Update an enrollment
+
+  async getStudentCourses(userId: number){
+    return await this.enrollmentModel.findOne({
+      where: {user: {id: userId} },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['FirstName', 'LastName'],
+        },
+  
+        {
+          model: Course,
+          as: 'course',
+          attributes: ['title', 'description', 'price', 'category']
+        }
+  
+  
+        ],
+    })
+  }
+
   async update(
     id: number,
     updateEnrollmentDto: UpdateEnrollmentDto,
@@ -41,7 +92,7 @@ export class EnrollmentsService {
     });
   }
 
-  // Delete an enrollment
+
   async delete(id: number): Promise<void> {
     const enrollment = await this.enrollmentModel.findOne({ where: { id } });
     if (enrollment) {

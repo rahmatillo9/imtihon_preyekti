@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Submission } from './submissions.model';
 import { CreateSubmissionDto, UpdateSubmissionDto } from 'src/validators/submission.validator';
+import { Assignment } from 'src/assignments/assignments.model';
+import { User } from 'src/users/users.entity';
 
 @Injectable()
 export class SubmissionsService {
@@ -10,24 +12,51 @@ export class SubmissionsService {
     private readonly submissionModel: typeof Submission,
   ) {}
 
-  // Create a submission
+
   async createSubmission(createSubmissionDto: CreateSubmissionDto): Promise<Submission> {
     return this.submissionModel.create(createSubmissionDto);
   }
 
-  // Get all submissions
-  async findAll(): Promise<Submission[]> {
-    return this.submissionModel.findAll();
-  }
 
-  // Get a submission by ID
-  async findOne(id: number): Promise<Submission> {
-    return this.submissionModel.findOne({
-      where: { id },
+  async findAll(): Promise<Submission[]> {
+    return this.submissionModel.findAll({
+      include: [
+        {
+          model: Assignment,
+          as: 'assignment',  
+          attributes: ['title', 'description', 'dueDate'], 
+        },
+        {
+          model: User,
+          as: 'user', 
+          attributes: ['FirstName', 'LastName', 'email'], 
+        },
+      ],
+
     });
   }
 
-  // Update a submission
+
+  async findOne(id: number): Promise<Submission> {
+    return this.submissionModel.findOne({
+      where: { id },
+      include: [
+        {
+          model: Assignment,
+          as: 'assignment',  
+          attributes: ['title', 'description', 'dueDate'], 
+        },
+        {
+          model: User,
+          as: 'user', 
+          attributes: ['FirstName', 'LastName', 'email'], 
+        },
+      ],
+
+    });
+  }
+
+
   async update(
     id: number,
     updateSubmissionDto: UpdateSubmissionDto,
@@ -38,7 +67,7 @@ export class SubmissionsService {
     });
   }
 
-  // Delete a submission
+
   async delete(id: number): Promise<void> {
     const submission = await this.submissionModel.findOne({ where: { id } });
     if (submission) {

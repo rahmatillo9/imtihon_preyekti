@@ -6,11 +6,21 @@ import { Column, DataType, Model, Table} from "sequelize-typescript";
   timestamps: true
 })
 export class User extends Model<User> {
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  FirstName!: string;
+
+
+
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
   Lastname!: string;
+
 
   @Column({
     type: DataType.ENUM('student', 'teacher', 'admin'),

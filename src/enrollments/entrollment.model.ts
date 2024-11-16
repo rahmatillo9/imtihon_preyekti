@@ -7,12 +7,6 @@ import { Course } from 'src/courses/courses.model';
   timestamps: true,
 })
 export class Enrollment extends Model<Enrollment> {
-  @Column({
-    type: DataType.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  })
-  id: number;
 
   @ForeignKey(() => User)
   @Column({
@@ -21,7 +15,7 @@ export class Enrollment extends Model<Enrollment> {
   })
   userId: number;
 
-  @BelongsTo(() => User)
+  @BelongsTo(() => User, )
   user: User;
 
   @ForeignKey(() => Course)

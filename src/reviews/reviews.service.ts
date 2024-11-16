@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Review } from './reviews.model';
 import { CreateReviewDto, UpdateReviewDto } from 'src/validators/reviews.validator';
+import { Lesson } from 'src/lessons/lessons.model';
+import { User } from 'src/users/users.entity';
 
 @Injectable()
 export class ReviewsService {
@@ -10,24 +12,56 @@ export class ReviewsService {
     private readonly reviewModel: typeof Review,
   ) {}
 
-  // Create a review
+  
   async createReview(createReviewDto: CreateReviewDto): Promise<Review> {
     return this.reviewModel.create(createReviewDto);
   }
 
-  // Find all reviews
+
   async findAll(): Promise<Review[]> {
-    return this.reviewModel.findAll();
+    return this.reviewModel.findAll({
+       
+      include: [
+        {
+          model: User,
+          as: 'user', 
+          attributes: ['LirstName', 'LastName'],
+        },
+        {
+          model: Lesson,
+          as: 'lesson', 
+          attributes: ['title', 'description'], 
+        },
+      ],
+      attributes: ['id', 'rating', 'feedback'], 
+    });
+
+
+    
   }
 
-  // Find a single review by ID
+ 
   async findOne(id: number): Promise<Review> {
     return this.reviewModel.findOne({
       where: { id },
+
+      include: [
+        {
+          model: User,
+          as: 'user', 
+          attributes: ['LirstName', 'LastName'],
+        },
+        {
+          model: Lesson,
+          as: 'lesson', 
+          attributes: ['title', 'description'], 
+        },
+      ],
+      attributes: ['id', 'rating', 'feedback'], 
     });
   }
 
-  // Update a review
+
   async update(id: number, reviewData: UpdateReviewDto): Promise<[number, Review[]]> {
     return this.reviewModel.update(reviewData, {
       where: { id },
@@ -35,7 +69,7 @@ export class ReviewsService {
     });
   }
 
-  // Delete a review
+
   async delete(id: number): Promise<void> {
     const review = await this.reviewModel.findOne({ where: { id } });
     if (review) {

@@ -28,7 +28,7 @@ export class Review extends Model<Review> {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  rating: number;  // 1-5 oralig'ida reyting
+  rating: number; 
 
   @Column({
     type: DataType.STRING,

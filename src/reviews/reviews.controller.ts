@@ -17,26 +17,25 @@ import {
   export class ReviewsController {
     constructor(private readonly reviewsService: ReviewsService) {}
   
-    // Create a review
+  
     @Post()
     @HttpCode(HttpStatus.CREATED)
     async createReview(@Body() createReviewDto: CreateReviewDto): Promise<Review> {
       return this.reviewsService.createReview(createReviewDto);
     }
-  
-    // Get all reviews
+
     @Get()
     async findAll(): Promise<Review[]> {
       return this.reviewsService.findAll();
     }
   
-    // Get a single review by ID
+
     @Get(':id')
     async findOne(@Param('id') id: number): Promise<Review> {
       return this.reviewsService.findOne(id);
     }
   
-    // Update a review by ID
+   
     @Patch(':id')
     async update(
       @Param('id') id: number,
@@ -45,8 +44,7 @@ import {
       const [_, [updatedReview]] = await this.reviewsService.update(id, updateReviewDto);
       return updatedReview;
     }
-  
-    // Delete a review by ID
+
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
     async delete(@Param('id') id: number): Promise<void> {

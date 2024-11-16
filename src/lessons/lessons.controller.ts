@@ -9,7 +9,7 @@ export class LessonsController {
     constructor(private readonly LessonService: LessonsService){}
     @Post()
     async createLesson(@Body() createLessonDto: CreateLessonDto): Promise<Lesson> {
-      return this.LessonService.createLesson(createLessonDto); // CreateLessonDto to'liq yuborilmoqda
+      return this.LessonService.createLesson(createLessonDto); 
     }
     
     @Get()

@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Lesson } from './lessons.model';
 import { CreateLessonDto } from 'src/validators/lessons.validators';
+import { Course } from 'src/courses/courses.model';
+import { User } from 'src/users/users.entity';
 
 @Injectable()
 export class LessonsService {
@@ -16,13 +18,57 @@ export class LessonsService {
     }
 
     async findAll(): Promise<Lesson[]>{
-        return this.lessonModel.findAll();
+        return this.lessonModel.findAll({
+            include: [
+                {
+                  model: Course,
+                  as: 'course', 
+                  attributes: ['title', 'category'], 
+                  include: [
+                    {
+                      model: User,
+                      as: 'teacher',
+                      attributes: ['FirstName', 'LastName'], 
+                    },
+                  ],
+                },
+                {
+                  model: User,
+                  as: 'teacher', 
+                  attributes: ['FirstName', 'LastName'], 
+                },
+              ],
+              attributes: [ 'title', 'description', 'startTime', 'endTime'], 
+            });
+        
     }
 
     async findone(id: number): Promise<Lesson>{
         return this.lessonModel.findOne({
-            where: {id}
-        });
+            where: {id},
+
+            include: [
+                {
+                  model: Course,
+                  as: 'course', 
+                  attributes: ['title', 'category'], 
+                  include: [
+                    {
+                      model: User,
+                      as: 'teacher',
+                      attributes: ['FirstName', 'LastName'], 
+                    },
+                  ],
+                },
+                {
+                  model: User,
+                  as: 'teacher', 
+                  attributes: ['FirstName', 'LastName'], 
+                },
+              ],
+              attributes: [ 'title', 'description', 'startTime', 'endTime'], 
+            });
+        
     }
 
     async update( id:number,  LessonData: Partial<Lesson> ): Promise< [number,Lesson[]]>{
