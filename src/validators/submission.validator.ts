@@ -2,11 +2,11 @@ import { IsInt, IsNotEmpty, IsString, IsDate, IsOptional } from 'class-validator
 
 export class CreateSubmissionDto {
   @IsInt()
-  @IsNotEmpty({ message: 'Topshiriq ID noto‘g‘ri' })
+  @IsNotEmpty({ message: 'Topshiriq ID notogri' })
   assignmentId: number;
 
   @IsInt()
-  @IsNotEmpty({ message: 'Talaba ID noto‘g‘ri' })
+  @IsNotEmpty({ message: 'Talaba ID noto`g`ri' })
   userId: number;
 
   @IsString()

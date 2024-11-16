@@ -34,5 +34,5 @@ export class Review extends Model<Review> {
     type: DataType.STRING,
     allowNull: true,
   })
-  feedback: string; // Talabalar tomonidan yozilgan fikr
+  feedback: string; 
 }
