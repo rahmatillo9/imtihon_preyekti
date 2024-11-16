@@ -1,42 +1,53 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Course } from './courses.model';
-import { CreatecourseDto } from 'src/validators/courses.validator';
-import { UpdateCourseDto } from 'src/validators/courses.validator';
+import { CreatecourseDto, UpdateCourseDto } from 'src/validators/courses.validator';
 
 @Injectable()
-export class CourseService {
+export class CoursesService {
   constructor(
     @InjectModel(Course)
     private readonly courseModel: typeof Course,
   ) {}
 
+  // Create a course
+  async createCourse(createCourseDto: CreatecourseDto): Promise<Course> {
+    return this.courseModel.create(createCourseDto);
+  }
+
+  // Get all courses
   async findAll(): Promise<Course[]> {
-    return this.courseModel.findAll({ include: { all: true } });
+    return this.courseModel.findAll({
+      include: ['teacher', 'lessons', 'enrollments'],
+    });
   }
 
+  // Get a course by ID
   async findOne(id: number): Promise<Course> {
-    const course = await this.courseModel.findByPk(id, { include: { all: true } });
-    if (!course) {
-      throw new NotFoundException('Course topilmadi');
-    }
-    return course;
+    return this.courseModel.findOne({
+      where: { id },
+      include: ['teacher', 'lessons', 'enrollments'],
+    });
   }
 
-  async create(createCourseDto: CreatecourseDto): Promise<Course> {
-    return this.courseModel.create({ ...createCourseDto });
-  }
-
+  // Update a course
   async update(
     id: number,
     updateCourseDto: UpdateCourseDto,
-  ): Promise<Course> {
-    const course = await this.findOne(id);
-    return course.update({ ...updateCourseDto });
+  ): Promise<[number, Course[]]> {
+    return this.courseModel.update(updateCourseDto, {
+      where: { id },
+      returning: true,
+    });
   }
 
+  // Delete a course
   async delete(id: number): Promise<void> {
-    const course = await this.findOne(id);
-    await course.destroy();
+    const course = await this.courseModel.findOne({
+      where: { id },
+    });
+    if (course) {
+      await course.destroy();
+    }
   }
 }

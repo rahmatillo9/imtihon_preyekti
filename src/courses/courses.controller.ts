@@ -1,37 +1,55 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
-import { CourseService } from './courses.service';
-import { CreatecourseDto } from 'src/validators/courses.validator';
-import { UpdateCourseDto } from 'src/validators/courses.validator';
+import {
+  Controller,
+  Post,
+  Get,
+  Patch,
+  Delete,
+  Param,
+  Body,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
+import { CoursesService } from './courses.service';
+import { CreatecourseDto, UpdateCourseDto } from 'src/validators/courses.validator';
+import { Course } from './courses.model';
 
 @Controller('courses')
-export class CourseController {
-  constructor(private readonly courseService: CourseService) {}
+export class CoursesController {
+  constructor(private readonly coursesService: CoursesService) {}
 
-  @Get()
-  async findAll() {
-    return this.courseService.findAll();
-  }
-
-  @Get(':id')
-  async findOne(@Param('id') id: number) {
-    return this.courseService.findOne(id);
-  }
-
+  // Create a course
   @Post()
-  async create(@Body() createCourseDto: CreatecourseDto) {
-    return this.courseService.create(createCourseDto);
+  @HttpCode(HttpStatus.CREATED)
+  async createCourse(@Body() createCourseDto: CreatecourseDto): Promise<Course> {
+    return this.coursesService.createCourse(createCourseDto);
   }
 
-  @Put(':id')
+  // Get all courses
+  @Get()
+  async findAll(): Promise<Course[]> {
+    return this.coursesService.findAll();
+  }
+
+  // Get a course by ID
+  @Get(':id')
+  async findOne(@Param('id') id: number): Promise<Course> {
+    return this.coursesService.findOne(id);
+  }
+
+  // Update a course by ID
+  @Patch(':id')
   async update(
     @Param('id') id: number,
     @Body() updateCourseDto: UpdateCourseDto,
-  ) {
-    return this.courseService.update(id, updateCourseDto);
+  ): Promise<Course> {
+    const [_, [updatedCourse]] = await this.coursesService.update(id, updateCourseDto);
+    return updatedCourse;
   }
 
+  // Delete a course by ID
   @Delete(':id')
-  async delete(@Param('id') id: number) {
-    return this.courseService.delete(id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async delete(@Param('id') id: number): Promise<void> {
+    return this.coursesService.delete(id);
   }
 }
