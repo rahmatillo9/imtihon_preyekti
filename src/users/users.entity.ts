@@ -1,4 +1,7 @@
-import { Column, DataType, Model, Table} from "sequelize-typescript";
+import { Column, DataType, HasMany, Model, Table} from "sequelize-typescript";
+import { Assignment } from "src/assignments/assignments.model";
+import { Course } from "src/courses/courses.model";
+import { Lesson } from "src/lessons/lessons.model";
 
 
 @Table({
@@ -19,7 +22,7 @@ export class User extends Model<User> {
     type: DataType.STRING,
     allowNull: false,
   })
-  Lastname!: string;
+  LastName!: string;
 
 
   @Column({
@@ -42,5 +45,14 @@ export class User extends Model<User> {
   password!: string;
 
 
+
+  @HasMany(() => Lesson)  
+  lessons: Lesson[];
+  
+  @HasMany(() => Assignment)
+  assignment: Assignment[];
+
+  @HasMany(() => Course)
+  course: Course[];
 
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Submission } from './submissions.model';
 import { CreateSubmissionDto, UpdateSubmissionDto } from 'src/validators/submission.validator';
@@ -24,7 +24,7 @@ export class SubmissionsService {
         {
           model: Assignment,
           as: 'assignment',  
-          attributes: ['title', 'description', 'dueDate'], 
+          attributes: [ 'description', 'dueDate'], 
         },
         {
           model: User,
@@ -44,7 +44,7 @@ export class SubmissionsService {
         {
           model: Assignment,
           as: 'assignment',  
-          attributes: ['title', 'description', 'dueDate'], 
+          attributes: [ 'description', 'dueDate'], 
         },
         {
           model: User,
@@ -66,6 +66,18 @@ export class SubmissionsService {
       returning: true,
     });
   }
+
+  
+  
+  async gradeSubmission(submissionId: number, grade: number): Promise<Submission> {
+    const submission = await this.submissionModel.findByPk(submissionId);
+    if (!submission) {
+      throw new NotFoundException('Submission not found');
+    }
+    submission.grade = grade;
+    return submission.save();
+  }
+  
 
 
   async delete(id: number): Promise<void> {

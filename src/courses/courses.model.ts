@@ -2,18 +2,14 @@ import { Table, Column, Model, DataType, ForeignKey, BelongsTo, HasMany } from '
 import { User } from 'src/users/users.entity';
 import { Enrollment } from 'src/enrollments/entrollment.model';
 import { Lesson } from 'src/lessons/lessons.model';
+import { Assignment } from 'src/assignments/assignments.model';
 
 @Table({
   tableName: 'courses',
   timestamps: true,
 })
 export class Course extends Model<Course> {
-  @Column({
-    type: DataType.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  })
-  id: number;
+
 
   @Column({
     type: DataType.STRING,
@@ -48,9 +44,14 @@ export class Course extends Model<Course> {
 
   @BelongsTo(() => User)
   teacher: User;
+
   @HasMany(() => Lesson)
   lessons: Lesson[];
-  
+
   @HasMany(() => Enrollment)
   enrollments: Enrollment[];
+
+  @HasMany(() => Assignment)
+  assignment: Assignment
 }
+

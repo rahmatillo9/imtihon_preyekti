@@ -28,23 +28,30 @@ export class Submission extends Model<Submission> {
     type: DataType.STRING,
     allowNull: false,
   })
-  submissionLink: string; // Topshiriqni topshirgan havola
+  submissionLink: string; 
 
   @Column({
     type: DataType.DATE,
     allowNull: false,
   })
-  submittedAt: Date; // Qachon topshirilgan
+  submittedAt: Date; 
 
   @Column({
     type: DataType.INTEGER,
     allowNull: true,
   })
-  grade: number; // O'qituvchi tomonidan berilgan baho
+  grade: number; 
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
   })
-  feedback: string; // O'qituvchi fikr bildirishi mumkin
+  feedback: string; 
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+  })
+  isSubmitted: boolean;
+
 }

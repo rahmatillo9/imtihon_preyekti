@@ -17,7 +17,7 @@ export class UsersController {
     async createUser(@Body() createUserDto: CreateUsersDto): Promise<User>{
         return this.usersServise.createUser(
           createUserDto.FirstName,
-            createUserDto.Lastname,
+            createUserDto.LastName,
             createUserDto.role,
             createUserDto.email,
             createUserDto.password,

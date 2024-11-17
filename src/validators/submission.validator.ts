@@ -1,34 +1,55 @@
-import { IsInt, IsNotEmpty, IsString, IsDate, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsInt, IsNotEmpty, IsString, IsDate, IsOptional, IsNumber, Min, Max, IsBoolean } from 'class-validator';
 
 export class CreateSubmissionDto {
   @IsInt()
-  @IsNotEmpty({ message: 'Topshiriq ID notogri' })
   assignmentId: number;
 
   @IsInt()
-  @IsNotEmpty({ message: 'Talaba ID noto`g`ri' })
   userId: number;
 
   @IsString()
-  @IsNotEmpty({ message: 'Topshiriq havolasi majburiy' })
   submissionLink: string;
 
+  @Type(() => Date)
   @IsDate()
-  @IsNotEmpty({ message: 'Topshiriq vaqti majburiy' })
   submittedAt: Date;
+
+  @IsInt()
+  grade: number;
+
+  @IsString()
+  feedback: string;
+
+  @IsBoolean()
+  isSubmitted: boolean;
 }
 
 
 export class UpdateSubmissionDto {
     @IsInt()
     @IsOptional()
-    grade?: number; // O'qituvchi tomonidan baho berilgan bo'lsa
+    grade?: number;
   
     @IsString()
     @IsOptional()
-    feedback?: string; // O'qituvchi fikri
+    feedback?: string; 
   
     @IsDate()
     @IsOptional()
-    submittedAt?: Date; // Agar vaqtni yangilash zarur bo'lsa
+    submittedAt?: Date; 
+
+    @IsBoolean()
+    @IsOptional()
+    isSubmitted?: boolean;
   }
+
+ 
+
+export class GradeSubmissionDto {
+  @IsNumber()
+  @Min(0)
+  @Max(100) 
+  @IsNotEmpty()
+  grade: number;
+}

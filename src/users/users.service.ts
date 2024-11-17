@@ -10,9 +10,9 @@ export class UsersService {
     private readonly userModel: typeof User,
  ){}
 
- async createUser( FirstName: string, Lastname: string, role: string, email: string, password: string): Promise<User>{
+ async createUser( FirstName: string, LastName: string, role: string, email: string, password: string): Promise<User>{
     const hashPassword = await bcrypt.hash(password, 10);
-    return this.userModel.create({FirstName, Lastname, role, email, password: hashPassword});
+    return this.userModel.create({FirstName, LastName, role, email, password: hashPassword});
 
  }
 
@@ -28,7 +28,7 @@ export class UsersService {
   async findOne(id: number): Promise<User>{
     return this.userModel.findOne({
         where:{id},
-        attributes: ['id', 'FirstName', 'Lastname', 'role', 'email', 'password' ],
+        attributes: ['id', 'FirstName', 'LastName', 'role', 'email', 'password' ],
     });
   }
 

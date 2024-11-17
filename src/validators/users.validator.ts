@@ -15,7 +15,7 @@ export class CreateUsersDto{
 
     @IsString()
     @IsNotEmpty()
-    Lastname: string;
+    LastName: string;
    
     @IsEnum(Role)
     @IsNotEmpty()
@@ -42,7 +42,7 @@ export class UpdateUserDto {
     @IsOptional()
     @IsString()
     @IsNotEmpty()
-    Lastname?: string;
+    LastName?: string;
   
     @IsOptional()
     @IsEnum(Role)  

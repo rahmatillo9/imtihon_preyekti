@@ -47,4 +47,16 @@ export class Lesson extends Model<Lesson> {
 
   @BelongsTo(() => User)
   teacher: User;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  video_url: string; 
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  videoFilename: string; 
 }

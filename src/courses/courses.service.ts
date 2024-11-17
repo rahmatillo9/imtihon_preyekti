@@ -11,6 +11,7 @@ export class CoursesService {
   constructor(
     @InjectModel(Course)
     private readonly courseModel: typeof Course,
+
   ) {}
 
 
@@ -25,7 +26,7 @@ export class CoursesService {
         {
           model: User,
           as: 'teacher', 
-          attributes: ['FirstName', 'Lastname'], 
+          attributes: ['FirstName', 'LastName'], 
         },
         {
           model: Lesson,
@@ -44,7 +45,7 @@ export class CoursesService {
         {
           model: User,
           as: 'teacher', 
-          attributes: ['FirstName', 'Lastname'], 
+          attributes: ['FirstName', 'LastName'], 
         },
         {
           model: Lesson,
@@ -74,7 +75,7 @@ export class CoursesService {
           {
             model: User,
             as: 'teacher', 
-            attributes: ['FirstName', 'Lastname'], 
+            attributes: ['FirstName', 'LastName'], 
           },
           {
             model: Lesson,
@@ -96,6 +97,9 @@ export class CoursesService {
       throw new Error('Could not fetch courses. Please try again later.');
     }
   }
+  
+
+
   
 
 
